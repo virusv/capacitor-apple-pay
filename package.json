@@ -1,7 +1,7 @@
 {
   "name": "capacitor-apple-pay",
   "version": "0.1.1",
-  "description": "-",
+  "description": "Capacitor plugin to implement payment function via Apple Pay",
   "main": "dist/plugin.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -52,9 +52,9 @@
   "swiftlint": "@ionic/swiftlint-config",
   "repository": {
     "type": "git",
-    "url": "-"
+    "url": "https://github.com/virusv/capacitor-apple-pay"
   },
   "bugs": {
-    "url": "-/issues"
+    "url": "https://github.com/virusv/capacitor-apple-pay/issues"
   }
 }

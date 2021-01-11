@@ -103,6 +103,19 @@ public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
     
     
     func convertPaymentNetworks(_ supportedNetworksRaw: [String]) -> [PKPaymentNetwork] {
+        if supportedNetworksRaw.count == 0 {
+            return [
+                PKPaymentNetwork.masterCard,
+                PKPaymentNetwork.visa,
+                PKPaymentNetwork.amex,
+                PKPaymentNetwork.quicPay,
+                PKPaymentNetwork.chinaUnionPay,
+                PKPaymentNetwork.discover,
+                PKPaymentNetwork.interac,
+                PKPaymentNetwork.privateLabel,
+            ]
+        }
+        
         var supportedNetworks: [PKPaymentNetwork] = []
         for rawValue in supportedNetworksRaw {
             if let paymentType = convertPaymentSystem(rawValue) {

@@ -1,3 +1,4 @@
+// @ts-expect-error
 declare module '@capacitor/core' {
   interface PluginRegistry {
     ApplePay: ApplePayPlugin;
@@ -69,7 +70,7 @@ export interface PaymentResponse {
       }
     }
   };
-  
+
   // TODO:
   // shippingContact: ...
 }
