@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { ApplePayPlugin } from './definitions';
+import { ApplePayPlugin, PaymentRequest, PaymentResponse } from './definitions';
 
 export class ApplePayWeb extends WebPlugin implements ApplePayPlugin {
   constructor() {
@@ -8,10 +8,16 @@ export class ApplePayWeb extends WebPlugin implements ApplePayPlugin {
       platforms: ['web'],
     });
   }
-
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  canMakePayments(): Promise<{ isPayment: boolean; }> {
+    return Promise.resolve({ isPayment: false });
+  }
+  makePaymentRequest(request: PaymentRequest): Promise<PaymentResponse> {
+    console.log(request);
+    throw new Error('Method not implemented.');
+  }
+  completeLastTransaction(options: { status: string; }): Promise<void> {
+    console.log(options);
+    throw new Error('Method not implemented.');
   }
 }
 
