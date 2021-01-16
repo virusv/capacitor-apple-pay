@@ -47,8 +47,8 @@ export interface PaymentRequest {
   supportedCountries?: string[];
   supportedNetworks?: PaymentNetwork[];
   paymentSummaryItems: PaymentSummaryItem[];
-  requiredShippingContactFields: ContactField[];
-  requiredBillingContactFields: ContactField[];
+  requiredShippingContactFields?: ContactField[];
+  requiredBillingContactFields?: ContactField[];
   merchantCapabilities?: MerchantCapability[];
   billingContact?: PaymentContact;
   shippingContact?: PaymentContact;
