@@ -6,6 +6,7 @@ import PassKit
 public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
     var savedCall: CAPPluginCall?
     var lastCompletion: ((PKPaymentAuthorizationResult) -> Void)?
+    var paymentPopupProcessing: Bool = false
     
     @objc func canMakePayments(_ call: CAPPluginCall) {
         let isPayment = PKPaymentAuthorizationViewController.canMakePayments();
@@ -18,6 +19,7 @@ public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
         let paymentRequest = self.getPaymentRequest(call)
         let paymentAuth = PKPaymentAuthorizationController(paymentRequest: paymentRequest!)
         
+        self.paymentPopupProcessing = true
         paymentAuth.delegate = self
         paymentAuth.present()
     }
@@ -256,14 +258,19 @@ public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
     
     // ----------------------------------------------------------------------------------------------
     public func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
-        controller.dismiss()
+        // Если после открытия платежа метод paymentAuthorizationController
+        // не вызывался, это означает, что пользователь закрыл окно оплаты
+        if (self.paymentPopupProcessing) {
+            self.savedCall?.reject("canceled")
+            self.paymentPopupProcessing = false
+        }
         
-        // TODO:
-        // self.savedCall?.reject("Возможно случайно закрыли");
+        controller.dismiss()
     }
     
     public func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         self.lastCompletion = completion
+        self.paymentPopupProcessing = false
         
         let paymentMethodDictionary: NSMutableDictionary = [:]
         let token: NSMutableDictionary = [
