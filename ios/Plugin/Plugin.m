@@ -6,6 +6,5 @@
 CAP_PLUGIN(ApplePay, "ApplePay",
     CAP_PLUGIN_METHOD(completeLastTransaction, CAPPluginReturnPromise);
     CAP_PLUGIN_METHOD(canMakePayments, CAPPluginReturnPromise);
-    CAP_PLUGIN_METHOD(canMakePaymentsNetworks, CAPPluginReturnPromise);
     CAP_PLUGIN_METHOD(makePaymentRequest, CAPPluginReturnPromise);
 )

@@ -82,7 +82,7 @@ export interface PaymentResponse {
 
 export interface ApplePayPlugin {
   canMakePayments(): Promise<{ isPayment: boolean }>;
-  canMakePaymentsNetworks(options: CanMakePaymentsNetworks): Promise<{ isPayment: boolean }>;
+  canMakePayments(options: CanMakePaymentsNetworks): Promise<{ isPayment: boolean }>;
   makePaymentRequest(request: PaymentRequest): Promise<PaymentResponse>;
   completeLastTransaction(options: { status: string }): Promise<void>;
 }
