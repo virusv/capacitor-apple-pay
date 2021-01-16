@@ -40,6 +40,11 @@ export interface PaymentContact {
   }
 }
 
+export interface CanMakePaymentsNetworks {
+  usingNetworks: PaymentNetwork[];
+  capabilities?: MerchantCapability[];
+}
+
 export interface PaymentRequest {
   merchantIdentifier: string;
   countryCode: string;
@@ -53,6 +58,7 @@ export interface PaymentRequest {
   billingContact?: PaymentContact;
   shippingContact?: PaymentContact;
 }
+
 export interface PaymentResponse {
   token: {
     paymentData?: string;
@@ -66,8 +72,8 @@ export interface PaymentResponse {
         primaryAccountNumberSuffix: string;
         devicePassIdentifier?: string;
         pairedTerminalIdentifier?: string;
-      }
-    }
+      };
+    };
   };
 
   // TODO:
@@ -76,6 +82,7 @@ export interface PaymentResponse {
 
 export interface ApplePayPlugin {
   canMakePayments(): Promise<{ isPayment: boolean }>;
+  canMakePayments(options: CanMakePaymentsNetworks): Promise<{ isPayment: boolean }>;
   makePaymentRequest(request: PaymentRequest): Promise<PaymentResponse>;
   completeLastTransaction(options: { status: string }): Promise<void>;
 }

@@ -9,7 +9,33 @@ public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
     var paymentPopupProcessing: Bool = false
     
     @objc func canMakePayments(_ call: CAPPluginCall) {
-        let isPayment = PKPaymentAuthorizationViewController.canMakePayments();
+        var isPayment = false
+        
+        if !call.hasOption("usingNetworks") {
+            isPayment = PKPaymentAuthorizationViewController.canMakePayments()
+            call.success([ "isPayment": isPayment ])
+            return
+        }
+        
+        let networks = self.convertPaymentNetworks(
+            call.getArray("usingNetworks", String.self) ?? [String]()
+        )
+        
+        let rawCapabilities = call.getArray("capabilities", String.self) ?? [String]()
+        
+        if (rawCapabilities.count > 0) {
+            let capabilities = self.convertMerchantCapabilitiesUnion(rawCapabilities)
+            
+            isPayment = PKPaymentAuthorizationViewController.canMakePayments(
+                usingNetworks: networks,
+                capabilities: capabilities
+            )
+        } else {
+            isPayment = PKPaymentAuthorizationViewController.canMakePayments(
+                usingNetworks: networks
+            )
+        }
+        
         call.success([ "isPayment": isPayment ]);
     }
     

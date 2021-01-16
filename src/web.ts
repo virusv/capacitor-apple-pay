@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { ApplePayPlugin, PaymentRequest, PaymentResponse } from './definitions';
+import { ApplePayPlugin, PaymentRequest, PaymentResponse, CanMakePaymentsNetworks } from './definitions';
 
 export class ApplePayWeb extends WebPlugin implements ApplePayPlugin {
   constructor() {
@@ -9,6 +9,10 @@ export class ApplePayWeb extends WebPlugin implements ApplePayPlugin {
     });
   }
   canMakePayments(): Promise<{ isPayment: boolean; }> {
+    return Promise.resolve({ isPayment: false });
+  }
+  canMakePaymentsNetworks(options: CanMakePaymentsNetworks): Promise<{ isPayment: boolean }> {
+    console.log(options);
     return Promise.resolve({ isPayment: false });
   }
   makePaymentRequest(request: PaymentRequest): Promise<PaymentResponse> {
