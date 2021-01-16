@@ -13,6 +13,30 @@ public class ApplePay: CAPPlugin, PKPaymentAuthorizationControllerDelegate {
         call.success([ "isPayment": isPayment ]);
     }
     
+    @objc func canMakePaymentsNetworks(_ call: CAPPluginCall) {
+        let supportedNetworks = self.convertPaymentNetworks(
+            call.getArray("usingNetworks", String.self) ?? [String]()
+        )
+        
+        var isPayment = false
+        let rawJsCapabilities = call.getArray("capabilities", String.self) ?? [String]();
+        
+        if (rawJsCapabilities.count > 0) {
+            let merchantCapabilities = self.convertMerchantCapabilitiesUnion(rawJsCapabilities)
+            
+            isPayment = PKPaymentAuthorizationViewController.canMakePayments(
+                usingNetworks: supportedNetworks,
+                capabilities: merchantCapabilities
+            );
+        } else {
+            isPayment = PKPaymentAuthorizationViewController.canMakePayments(
+                usingNetworks: supportedNetworks
+            );
+        }
+        
+        call.success([ "isPayment": isPayment ]);
+    }
+    
     @objc func makePaymentRequest(_ call: CAPPluginCall) {
         self.savedCall = call
         
